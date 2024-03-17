@@ -1,0 +1,20 @@
+Vagrant.configure("2") do |config|
+  config.vm.box = "ubuntu/bionic64" 
+
+  config.vm.network "private_network", ip: "192.168.33.10"  
+
+  config.vm.provider "virtualbox" do |vb|
+  end
+
+  config.vm.provision "shell", inline: <<-SHELL
+    # Actualizar los repositorios e instalar NGINX
+    apt-get update
+    apt-get install -y nginx
+
+    # Iniciar el servicio de NGINX
+    service nginx start
+
+    # Configurar la página web de prueba
+    echo "<h1>Welcome to my simple webpage</h1>" > /var/www/html/index.html
+  SHELL
+end
