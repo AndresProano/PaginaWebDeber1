@@ -122,6 +122,7 @@ curl http://192.168.33.10
 <p>
 Donde deberiamos visualizar el mensaje "Welcome to my simple webpage" con el cual podremos verificar que nuestra página web se ejecuta con normalidad.
 </p>
+
 ### 1.2 Configuración Cliente en Vagrant
 
 <p>
