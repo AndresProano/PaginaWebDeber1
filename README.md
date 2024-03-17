@@ -435,13 +435,13 @@ top
 Dentro del terminal, obtenemos 
 </p>
 
-![Imagen 5. Uso de CPU y memoria sin carga]()
+![Imagen 5. Uso de CPU y memoria sin carga](https://github.com/AndresProano/PaginaWebDeber1/blob/main/CapturasDocker/Sin%20carga%20top.png)
 
 <p>
 Dentro de Monitor de Actividad, tenemos lo siguiente
 </p>
 
-![Imagen 6. Uso de CPU y memoria sin carga]()
+![Imagen 6. Uso de CPU y memoria sin carga](https://github.com/AndresProano/PaginaWebDeber1/blob/main/CapturasDocker/Sin%20carga.png)
 
 #### Después de prueba de carga
 
@@ -457,10 +457,26 @@ top
 Dentro del terminal, obtenemos 
 </p>
 
-![Imagen 7. Uso de CPU y memoria con carga]()
+![Imagen 7. Uso de CPU y memoria con carga](https://github.com/AndresProano/PaginaWebDeber1/blob/main/CapturasDocker/Con%20carga%20top.png)
 
 <p>
 Dentro de Monitor de Actividad, tenemos lo siguiente
 </p>
 
-![Imagen 8. Uso de CPU y memoria con carga]()
+![Imagen 8. Uso de CPU y memoria con carga](https://github.com/AndresProano/PaginaWebDeber1/blob/main/CapturasDocker/Con%20carga.png)
+
+<p>
+Con estas imagenes, podemos ver que sin cargar tenemos un uso de sistema de 7.05% mientras que con carga tenemos un uso de sistema de 65.27% mostrando que existe un aumento significativo dentro del uso de CPU y sistema. 
+</p>
+
+## 3 Conclusiones
+
+<p>
+En el primer experimento tuvimos un aumento de 59.24%, mientras que en el segundo tuvimos un aumento de 58.22%. 
+
+Con estos datos, podemos concluir que al usar contenedores tendremos un uso de recursos mucho menor. En el experimento no se pudo visualizar de mejor manera debido a que se estuvo corriendo la máquina de cliente y el servidor en la misma computadora. 
+
+El servidor a través de Vagrant tiende a utilizar mucho más recursos debido a que se necesita instalar un sistema operativo totalmente distinto, lo que conlleva a un mayor uso de memoria, tiempo y memoria. Mientras que, a través de docker, no existe la necesidad de instalar un SO ya que este comparte el SO de la máquina host. 
+
+Dentro de las máquinas virtuales, los contenedores tienden a ser mucho más eficientes.
+</p>
