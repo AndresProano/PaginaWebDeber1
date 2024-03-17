@@ -1,14 +1,14 @@
 # PaginaWebDeber1
-#Containers and Virtual Machines 
+# Containers and Virtual Machines 
 <p>
 In this assignment we will be comparing the usage and performance of both virtual machines and containers. For this activity, you’ll be working on groups of 2 people (max 3).
 </p>
 
-##Requirements: 
+## Requirements: 
 - The server: 1 computer running Vagrant and Docker
 - The client: 1 computer with at least Vagrant
 
-##Experiment 1:
+## Experiment 1:
 <p>
 For the server, write a Vagrant file that starts a Ubuntu VM, installs and configures a web server such as NGINX, and starts up the web server. The web server should host a very simple web page.
 
@@ -21,38 +21,43 @@ Note that for this experiment to work, you will need to make sure that you confi
 Make sure that your load test runs for at least 3 minutes. Your load test should generate at least 100 requests per second. When your load test is running, you should take screenshots that show the CPU and memory utilization of the server machine.
 </p>
 
-##Procedure Experiment 1:
-###1.1 Configuración del Servidor en Vagrant
+## Procedure Experiment 1:
+### 1.1 Configuración del Servidor en Vagrant
+
 <p>
 Para realizar el experimento primero se necesitó la creación de la máquina virtual donde se correrá el servidor, para ello utilizamos 
 </p>
+
 ````
 mkdir vagrantserver
-
 cd vagrantserver
-
 ````
+
 <p>
 Con esto, creamos una carpeta "vagrantserver" donde guardaremos los datos de nuestra máquina virtual.
-</p>
-<p>
+
 Para inicializar vagrant escribiremos el comando 
 </p>
+
 ````
 vagrant init
 ````
+
 <p>
 Veremos un mensaje tal que:
 </p>
+
 ````
 A `Vagrantfile` has been placed in this directory. You are now
 ready to `vagrant up` your first virtual environment! Please read
 the comments in the Vagrantfile as well as documentation on
 `vagrantup.com` for more information on using Vagrant.
 ````
+
 <p>
 Buscaremos la carpeta "vagrantserver" para modificarla, terminando con este archivo:
 </p>
+
 ````
 Vagrant.configure("2") do |config|
   config.vm.box = "ubuntu/bionic64" 
@@ -75,55 +80,71 @@ Vagrant.configure("2") do |config|
   SHELL
 end
 ````
+
 <p>
 Con este archivo "vagrantfile" lograremos que nuestra máquina virtual se ejecute con ubuntu, así como también le asignaremos una dirección ip y nos aseguraremos que se corra utilizando virtualbox. 
 A su vez, actualizaremos los repositorios e instalaremos Nginx que lo utilizaremos para correr nuestra página web. Finalmente, en la parte final del código configuraremos nuestra página web con el mensaje "Welcome to my simple webpage".
 </p>
+
 <p>
 Ahora, utilizaremos el código 
 </p>
+
 ````
 vagrant up
 ````
+
 <p>
 Para correr nuestra máquina virtual. 
 Y, cuando todos los procesos hayan finalizado, para ingresar a la misma utilizaremos 
 </p>
+
 ````
 vagrant ssh
 ````
+
 <p>
 Dentro de nuestra máquina virtual, utilizaremos el comando
 </p>
+
 ````
 sudo service nginx status
 ````
+
 <p>
 Para verificar el estado de nuestro servidor. Y, para conectarnos a este utilizaremos 
 </p>
+
 ````
 curl http://192.168.33.10
 ````
+
 <p>
 Donde deberiamos visualizar el mensaje "Welcome to my simple webpage" con el cual podremos verificar que nuestra página web se ejecuta con normalidad.
 </p>
 ### 1.2 Configuración Cliente en Vagrant
+
 <p>
 Crearemos una nueva maquina virtual para el cliente
 </p>
+
 ````
 mkdir vagrantcliente
 cd vagrantcliente
 ````
+
 <p>
 Inicializaremos esta nueva MV
 </p>
+
 ````
 vagrant init
 ````
+
 <p>
 Dentro del archivo "vagrantfiile" colocaremos: 
 </p>
+
 ````
 Vagrant.configure("2") do |config|
   config.vm.box = "ubuntu/bionic64" 
@@ -147,29 +168,36 @@ Vagrant.configure("2") do |config|
   SHELL
 end
 ````
+
 <p>
 Con esto nos aseguraremos que en la MV de cliente se instale wrk que utilizaremos para el testeo de nuestra página web.
 </p>
+
 <p>
 Una vez colocado esto en nuestro archivo "vagrantfile" correremos nuestra MV
 </p>
+
 ````
 vagrant up
 ````
+
 <p>
 Y para entrar en la MV utilizaremos 
 </p>
+
 ````
 vagrant ssh
 ````
+
 <p>
 Una vez dentro de la MV de cliente nos conectaremos a la página web a través del comando 
 </p>
+
 ````
 wrk -t2 -c100 -d180s http://192.168.33.10/
 ````
 
-###1.3 Resultados:
+### 1.3 Resultados:
 
 <p>
 Posterior a conectarnos a nuestra MV de servidor con nuestra MV de cliente, hemos recibido los siguientes datos:
@@ -179,31 +207,43 @@ Posterior a conectarnos a nuestra MV de servidor con nuestra MV de cliente, hemo
 <p>
 Para observar los recursos dentro de la maquina virtual utilizamos el comando:
 </p>
+
 ````
 top
 ````
+
 <p>
 Y podemos observar los siguientes resultados:
 </p>
+
 ![Imagen 1. Uso de CPU y memoria sin Carga](https://github.com/AndresProano/PaginaWebDeber1/blob/main/CapturasVagrant%20/Sin%20carga%20vagrant.png)
+
 <p>
 Mientras que dentor de monitor de actividad en la computadora host podemos observar:
 </p>
+
 ![Imagen 2. Uso de CPU y memoria sin Carga](https://github.com/AndresProano/PaginaWebDeber1/blob/main/CapturasVagrant%20/Sin%20carga.png)
+
 #### Durante la prueba de carga 
+
 <p>
 Para observar los recursos dentro de la maquina virtual utilizamos el comando:
 </p>
+
 ````
 top
 ````
+
 <p>
 Y podemos observar los siguientes resultados:
 </p>
+
 ![Imagen 3. Uso de CPU y memoria con Carga](https://github.com/AndresProano/PaginaWebDeber1/blob/main/CapturasVagrant%20/Con%20carga.png)
+
 <p>
 Mientras que dentor de monitor de actividad en la computadora host podemos observar:
 </p>
+
 ![Imagen 4. Uso de CPU y memoria con Carga](https://github.com/AndresProano/PaginaWebDeber1/blob/main/CapturasVagrant%20/Con%20carga%20vagrant.png)
 
 <p>
