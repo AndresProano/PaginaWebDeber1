@@ -251,6 +251,10 @@ Mientras que dentor de monitor de actividad en la computadora host podemos obser
 Al observar los datos recopilados, podemos ver que existe un aumento significativo del uso del CPU. Sin carga podemos observar que tenemos un uso de sistema de 6.93% mientras que con carga tenemos un uso de sistema de 66.17% mostrando un aumento significativo.
 </p>
 
+## Experiment 2:
+
+You’ll repeat the same experiment as before. The only difference is that you have to run the web server in Docker instead of a virtual machine.
+
 ## Procedure Experiment 2:
 
 ### 2.1 Configuración del Servidor en Docker: 
