@@ -250,3 +250,217 @@ Mientras que dentor de monitor de actividad en la computadora host podemos obser
 <p>
 Al observar los datos recopilados, podemos ver que existe un aumento significativo del uso del CPU. Sin carga podemos observar que tenemos un uso de sistema de 6.93% mientras que con carga tenemos un uso de sistema de 66.17% mostrando un aumento significativo.
 </p>
+
+## Procedure Experiment 2:
+
+### 2.1 Configuración del Servidor en Docker: 
+
+<p>
+Como primer punto, necesitamos crear una carpeta donde se va a almacenar nuestros archivos de Docker, para ello utilizamos 
+</p>
+
+````
+mkdir DockerServer
+cd DockerServer
+````
+
+<p>
+Aquí crearemos dos archivos, primero un Dockerfile
+</p>
+
+````
+nano Dockerfile
+````
+
+<p>
+Y aquí colocaremos
+</p>
+
+````
+# Usa la imagen oficial de NGINX como base
+FROM nginx:latest
+
+# Copia el archivo index.html en el directorio de HTML de NGINX
+COPY index.html /usr/share/nginx/html/index.html
+````
+
+<p>
+Donde utilizamos la imagen de Nginx con la que descargaremos nuestra página web 
+
+También crearemos un archivo "index.html" 
+</p>
+
+````
+nano index.html
+````
+
+<p>
+Donde colocaremos lo que queremos que se muestre en nuestra página web, en este caso
+</p>
+
+````
+Hola Mundo
+````
+
+### 2.2 Inicializar el servidor Docker
+
+<p>
+Ahora, para inicializar el servidor primero tenemos que construir la imagen Docker a utilizar
+</p>
+
+````
+docker build -t my-nginx .
+````
+
+<p>
+Después de este comando, podemos empezar a correr nuestra página web dentro de docker
+</p>
+
+````
+docker run -d -p 80:80 my-nginx
+````
+
+<p>
+Con esto haremos que el puerto 80 del contenedor sea redigirido al puerto 80 del host y utilizamos la imagen my-nginx.
+Finalmente, para verificar que el contenedor esté en funcionamiento utilizamos
+</p>
+
+````
+docker ps
+````
+
+<p>
+Aquí, deberiamos recibir algo como 
+</p>
+
+````
+CONTAINER ID   IMAGE      COMMAND                  CREATED          STATUS         PORTS                NAMES
+07cb01b0edf2   my-nginx   "/docker-entrypoint.…"   10 seconds ago   Up 9 seconds   0.0.0.0:80->80/tcp   compassionate_goldberg
+````
+
+<p>
+Lo cual confirmará que el contenedor se está ejecutando de manera correcta
+</p>
+
+### 2.3 Configuración de Vagrant Cliente
+
+<p>
+Para poder conectarnos al docker debemos crear una nueva máquina virtual, o en su caso podríamos utilizar la misma que se utilizó para el experimento 1. 
+En cualquier caso, para generar una nueva máquina virtual necesitamos 
+</p>
+
+
+````
+mkdir vagrantcliente
+cd vagrantcliente
+````
+
+<p>
+Inicializaremos esta nueva MV
+</p>
+
+````
+vagrant init
+````
+
+<p>
+Dentro del archivo "vagrantfiile" colocaremos: 
+</p>
+
+````
+Vagrant.configure("2") do |config|
+  config.vm.box = "ubuntu/bionic64" 
+
+  config.vm.provider "virtualbox" do |vb|
+    # Configuraciones específicas de VirtualBox
+    vb.memory = "1024"  
+    vb.cpus = 2         
+  end
+
+  config.vm.network "private_network", ip: "192.168.33.11"
+  
+  config.vm.provision "shell", inline: <<-SHELL
+    apt-get update
+    apt-get install -y build-essential libssl-dev git unzip
+
+    git clone https://github.com/wg/wrk.git
+    cd wrk
+    make
+    cp wrk /usr/local/bin
+  SHELL
+end
+````
+
+<p>
+Con esto nos aseguraremos que en la MV de cliente se instale wrk que utilizaremos para el testeo de nuestra página web.
+</p>
+
+<p>
+Una vez colocado esto en nuestro archivo "vagrantfile" correremos nuestra MV
+</p>
+
+````
+vagrant up
+````
+
+<p>
+Y para entrar en la MV utilizaremos 
+</p>
+
+````
+vagrant ssh
+````
+
+<p>
+Una vez dentro de la MV de cliente nos conectaremos a la página web a través del comando 
+</p>
+
+````
+wrk -t2 -c100 -d180s http://192.168.33.10/
+````
+
+### 2.3 Resultados 
+
+#### Antes de la prueba de carga
+
+<p>
+Ahora, tenemos como resultado al ejecutar el comando 
+</p>
+
+````
+top
+````
+
+<p>
+Dentro del terminal, obtenemos 
+</p>
+
+![Imagen 5. Uso de CPU y memoria sin carga]()
+
+<p>
+Dentro de Monitor de Actividad, tenemos lo siguiente
+</p>
+
+![Imagen 6. Uso de CPU y memoria sin carga]()
+
+#### Después de prueba de carga
+
+<p>
+Tenemos como resultado al ejecutar el comando 
+</p>
+
+````
+top
+````
+
+<p>
+Dentro del terminal, obtenemos 
+</p>
+
+![Imagen 7. Uso de CPU y memoria con carga]()
+
+<p>
+Dentro de Monitor de Actividad, tenemos lo siguiente
+</p>
+
+![Imagen 8. Uso de CPU y memoria con carga]()
